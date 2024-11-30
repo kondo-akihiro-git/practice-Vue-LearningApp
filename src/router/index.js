@@ -1,18 +1,23 @@
-import { createRouter, createWebHistory } from "vue-router";
-import HomePage from "../components/Home.vue";
-import AboutPage from "../components/About.vue";
-import ContactPage from "../components/Contact.vue";
+import { createRouter, createWebHistory } from 'vue-router';  // Vue 3用のインポート
+import Dashboard from '../components/Dashboard.vue';
+import Category from '../components/Category.vue';
 
-// ルート設定
 const routes = [
-  { path: "/", component: HomePage },
-  { path: "/about", component: AboutPage },
-  { path: "/contact", component: ContactPage },
+  {
+    path: '/',
+    name: 'Dashboard',
+    component: Dashboard,
+  },
+  {
+    path: '/category/:id',
+    name: 'Category',
+    component: Category,
+    props: true,
+  },
 ];
 
-// ルーター作成
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(process.env.BASE_URL),  // Vue 3用の履歴モード
   routes,
 });
 

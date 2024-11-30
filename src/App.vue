@@ -1,26 +1,56 @@
 <template>
   <div id="app">
-    <!-- ナビゲーションメニュー -->
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link to="/contact">Contact</router-link>
-    </nav>
-    <hr />
-    <!-- コンテンツの表示エリア -->
-    <router-view></router-view>
+    <h1>Learning Dashboard</h1>
+    <div v-if="categories.length > 0">
+      <h2>Choose a Category to Learn:</h2>
+      <ul>
+        <li v-for="category in categories" :key="category.id">
+          <button @click="loadLesson(category.id)">{{ category.name }}</button>
+        </li>
+      </ul>
+    </div>
+    <div v-if="lesson">
+      <h3>Lesson:</h3>
+      <p>{{ lesson }}</p>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "App",
+  data() {
+    return {
+      categories: [],  // カテゴリーリスト
+      lesson: null,    // 選択したカテゴリーの学習内容
+    };
+  },
+  created() {
+    // コンポーネントが作成されたときにカテゴリーを取得
+    this.fetchCategories();
+  },
+  methods: {
+    async fetchCategories() {
+      const response = await fetch("http://localhost:8888/dashboard");
+      const data = await response.json();
+      this.categories = data.categories;
+    },
+    async loadLesson(categoryId) {
+      const response = await fetch(`http://localhost:8888/category/${categoryId}`);
+      const data = await response.json();
+      if (data.lesson) {
+        this.lesson = data.lesson;  // 学習内容を表示
+      } else {
+        this.lesson = "Sorry, we couldn't load the lesson.";
+      }
+    },
+  },
 };
 </script>
 
-<style>
-/* 簡単なスタイル */
-nav {
-  margin-bottom: 10px;
+<style scoped>
+button {
+  margin: 5px;
+  padding: 10px;
+  cursor: pointer;
 }
 </style>
