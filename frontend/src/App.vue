@@ -1,27 +1,26 @@
 <template>
   <div id="app">
-    <h1>{{ message }}</h1>
+    <!-- ナビゲーションメニュー -->
+    <nav>
+      <router-link to="/">Home</router-link> |
+      <router-link to="/about">About</router-link> |
+      <router-link to="/contact">Contact</router-link>
+    </nav>
+    <hr />
+    <!-- コンテンツの表示エリア -->
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
-  name: 'App',
-  data() {
-    return {
-      message: ''
-    };
-  },
-  mounted() {
-    axios.get('http://localhost:8888/api/data')
-      .then(response => {
-        this.message = response.data.message;
-      })
-      .catch(error => {
-        console.error('There was an error!', error);
-      });
-  }
+  name: "App",
 };
 </script>
+
+<style>
+/* 簡単なスタイル */
+nav {
+  margin-bottom: 10px;
+}
+</style>
