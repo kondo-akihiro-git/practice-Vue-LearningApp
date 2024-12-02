@@ -1,7 +1,8 @@
 <template>
     <div>
-        <h2>カテゴリー: {{ category.name }}</h2>
-        <p>{{ categoryContent }}</p>
+        <h2>カテゴリー: {{ categoryContent.category }}</h2>
+        <p><strong>キーワード:</strong> {{ categoryContent.keyword }}</p>
+        <p><strong>説明:</strong> {{ categoryContent.description }}</p>
     </div>
 </template>
 
@@ -25,7 +26,7 @@ export default {
             fetch(`http://localhost:8888/category/${this.category.id}`)
                 .then((response) => response.json())
                 .then((data) => {
-                    this.categoryContent = data.content;
+                    this.categoryContent = data;
                 });
         },
     },

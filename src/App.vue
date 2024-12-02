@@ -9,9 +9,10 @@
         </li>
       </ul>
     </div>
-    <div v-if="lesson">
-      <h3>Lesson:</h3>
-      <p>{{ lesson }}</p>
+    <div v-if="categoryContent">
+      <h3>Category: {{ categoryContent.category }}</h3>
+      <p><strong>Keyword:</strong> {{ categoryContent.keyword }}</p>
+      <p><strong>Description:</strong> {{ categoryContent.description }}</p>
     </div>
   </div>
 </template>
@@ -21,7 +22,7 @@ export default {
   data() {
     return {
       categories: [],  // カテゴリーリスト
-      lesson: null,    // 選択したカテゴリーの学習内容
+      categoryContent: null,  // 選択したカテゴリーの内容
     };
   },
   created() {
@@ -37,10 +38,10 @@ export default {
     async loadLesson(categoryId) {
       const response = await fetch(`http://localhost:8888/category/${categoryId}`);
       const data = await response.json();
-      if (data.lesson) {
-        this.lesson = data.lesson;  // 学習内容を表示
+      if (data.category) {
+        this.categoryContent = data;  // カテゴリーの内容を表示
       } else {
-        this.lesson = "Sorry, we couldn't load the lesson.";
+        this.categoryContent = { category: "No category found" };
       }
     },
   },
