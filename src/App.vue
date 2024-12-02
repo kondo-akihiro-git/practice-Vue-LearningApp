@@ -9,10 +9,15 @@
         </li>
       </ul>
     </div>
-    <div v-if="categoryContent">
-      <h3>Category: {{ categoryContent.category }}</h3>
-      <p><strong>Keyword:</strong> {{ categoryContent.keyword }}</p>
-      <p><strong>Description:</strong> {{ categoryContent.description }}</p>
+    <div v-if="categoryContent && categoryContent.length > 0">
+      <h3>Lessons in Selected Category:</h3>
+      <ul>
+        <li v-for="lesson in categoryContent" :key="lesson.keyword">
+          <p><strong>Category:</strong> {{ lesson.category }}</p>
+          <p><strong>Keyword:</strong> {{ lesson.keyword }}</p>
+          <p><strong>Description:</strong> {{ lesson.description }}</p>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -21,12 +26,11 @@
 export default {
   data() {
     return {
-      categories: [],  // カテゴリーリスト
-      categoryContent: null,  // 選択したカテゴリーの内容
+      categories: [], // カテゴリーリスト
+      categoryContent: null, // 選択したカテゴリーの内容（リスト）
     };
   },
   created() {
-    // コンポーネントが作成されたときにカテゴリーを取得
     this.fetchCategories();
   },
   methods: {
@@ -38,20 +42,8 @@ export default {
     async loadLesson(categoryId) {
       const response = await fetch(`http://localhost:8888/category/${categoryId}`);
       const data = await response.json();
-      if (data.category) {
-        this.categoryContent = data;  // カテゴリーの内容を表示
-      } else {
-        this.categoryContent = { category: "No category found" };
-      }
+      this.categoryContent = data.lessons || []; // レッスンリストを保存
     },
   },
 };
 </script>
-
-<style scoped>
-button {
-  margin: 5px;
-  padding: 10px;
-  cursor: pointer;
-}
-</style>
